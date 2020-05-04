@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
-	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorizaton');
 	if (req.method === 'OPTIONS') {
 		return res.sendStatus(200);
 	}
@@ -36,7 +36,9 @@ mongoose
 		{ useNewUrlParser: true, useUnifiedTopology: true }
 	)
 	.then(() => {
-		app.listen(8000);
+		app.listen(8000, () => {
+			console.log(`Database Connected & Node Server Started...`);
+		});
 	})
 	.catch(err => {
 		console.log(err);

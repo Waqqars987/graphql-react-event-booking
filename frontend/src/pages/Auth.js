@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import AuthContext from '../context/auth-context';
+
 import './Auth.css';
+import AuthContext from '../context/auth-context';
 
 class AuthPage extends Component {
 	state = {
@@ -29,28 +30,29 @@ class AuthPage extends Component {
 		if (email.trim().length === 0 || password.trim().length === 0) {
 			return;
 		}
+
 		let requestBody = {
 			query : `
-				query {
-					login(email:"${email}", password:"${password}") {
-						userId
-						token
-						tokenExpiration
-					}
-				}
-			`
+        query {
+          login(email: "${email}", password: "${password}") {
+            userId
+            token
+            tokenExpiration
+          }
+        }
+      `
 		};
 
 		if (!this.state.isLogin) {
 			requestBody = {
 				query : `
-					mutation {
-						createUser(userInput: {email: "${email}", password: "${password}"}) {
-							_id
-							email
-						}
-					}
-				`
+          mutation {
+            createUser(userInput: {email: "${email}", password: "${password}"}) {
+              _id
+              email
+            }
+          }
+        `
 			};
 		}
 
@@ -80,11 +82,12 @@ class AuthPage extends Component {
 				console.log(err);
 			});
 	};
+
 	render () {
 		return (
 			<form className='auth-form' onSubmit={this.submitHandler}>
 				<div className='form-control'>
-					<label htmlFor='email'>Email</label>
+					<label htmlFor='email'>E-Mail</label>
 					<input type='email' id='email' ref={this.emailEl} />
 				</div>
 				<div className='form-control'>
