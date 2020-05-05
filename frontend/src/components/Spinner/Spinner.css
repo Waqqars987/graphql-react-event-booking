@@ -2,7 +2,6 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* height: 70vh; */
 }
 .lds-dual-ring {
 	display: inline-block;

@@ -15,6 +15,9 @@ class EventsPage extends Component {
 		selectedEvent : null
 	};
 
+	isActive = true;
+	static contextType = AuthContext;
+
 	constructor (props) {
 		super(props);
 		this.titleElRef = React.createRef();
@@ -26,8 +29,6 @@ class EventsPage extends Component {
 	componentDidMount () {
 		this.fetchEvents();
 	}
-
-	static contextType = AuthContext;
 
 	startCreateEventHandler = () => {
 		this.setState({ creating: true });
@@ -45,17 +46,23 @@ class EventsPage extends Component {
 		}
 		// const event = { title, price, date, description };
 		const requestBody = {
-			query : `
-        	mutation {
-          		createEvent(eventInput: {title: "${title}", description: "${description}", price: ${price}, date: "${date}"}) {
-					_id
-					title
-					description
-					date
-					price
-          		}
-        	}
-      	`
+			query     : `
+				mutation CreateEvent ($title: String!, $description: String!, $price: Float!, $date: String!){
+					createEvent(eventInput: {title: $title, description: $description, price: $price, date: $date}) {
+						_id
+						title
+						description
+						date
+						price
+					}
+				}
+		  `,
+			variables : {
+				title       : title,
+				description : description,
+				price       : price,
+				date        : date
+			}
 		};
 
 		const token = this.context.token;
@@ -80,9 +87,9 @@ class EventsPage extends Component {
 					updatedEvents.push({
 						_id         : resData.data.createEvent._id,
 						title       : resData.data.createEvent.title,
-						description : resData.data.createEvent.title,
-						date        : resData.data.createEvent.title,
-						price       : resData.data.createEvent.title,
+						description : resData.data.createEvent.description,
+						date        : resData.data.createEvent.date,
+						price       : resData.data.createEvent.price,
 						creator     : {
 							_id : this.context.userId
 						}
@@ -134,11 +141,15 @@ class EventsPage extends Component {
 			})
 			.then(resData => {
 				const events = resData.data.events;
-				this.setState({ events: events, isLoading: false });
+				if (this.isActive) {
+					this.setState({ events: events, isLoading: false });
+				}
 			})
 			.catch(err => {
 				console.log(err);
-				this.setState({ isLoading: false });
+				if (this.isActive) {
+					this.setState({ isLoading: false });
+				}
 			});
 	};
 
@@ -149,7 +160,51 @@ class EventsPage extends Component {
 		});
 	};
 
-	bookEventHandler = params => {};
+	bookEventHandler = () => {
+		if (!this.context.token) {
+			this.setState({ selectedEvent: null });
+			return;
+		}
+		const requestBody = {
+			query     : `
+				mutation BookEvent($id:ID!) {
+					bookEvent(eventId: $id) {
+						_id
+						createdAt
+						updatedAt
+					}
+				}
+		  `,
+			variables : {
+				id : this.state.selectedEvent._id
+			}
+		};
+
+		fetch('http://localhost:8000/graphql', {
+			method  : 'POST',
+			body    : JSON.stringify(requestBody),
+			headers : {
+				'Content-Type' : 'application/json',
+				Authorizaton   : 'Bearer ' + this.context.token
+			}
+		})
+			.then(res => {
+				if (res.status !== 200 && res.status !== 201) {
+					throw new Error('Failed!');
+				}
+				return res.json();
+			})
+			.then(resData => {
+				this.setState({ selectedEvent: null });
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	};
+
+	componentWillUnmount () {
+		this.isActive = false;
+	}
 
 	render () {
 		return (
@@ -162,7 +217,7 @@ class EventsPage extends Component {
 						canConfirm
 						onCancel={this.modalCancelHandler}
 						onConfirm={this.modalConfirmHandler}
-						confirmText='Cancel'
+						confirmText='Confirm'
 					>
 						<form>
 							<div className='form-control'>
@@ -191,7 +246,7 @@ class EventsPage extends Component {
 						canConfirm
 						onCancel={this.modalCancelHandler}
 						onConfirm={this.bookEventHandler}
-						confirmText='Book'
+						confirmText={this.context.token ? 'Book' : 'Confirm'}
 					>
 						<h1>{this.state.selectedEvent.title} </h1>
 						<h2>
