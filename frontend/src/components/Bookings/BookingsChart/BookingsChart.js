@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bar as BarChart } from 'react-chartjs';
+import { Bar } from 'react-chartjs-2';
 import './BookingsChart.css';
 
 const BOOKINGS_BUCKETS = {
@@ -34,6 +34,7 @@ const bookingsChart = props => {
 		values.push(filteredBookingsCount);
 		chartData.labels.push(bucket);
 		chartData.datasets.push({
+			label           : 'Bookings',
 			fillColor       : 'rgba(220,220,220,0.5)',
 			strokeColor     : 'rgba(220,220,220,0.8)',
 			highlightFill   : 'rgba(220,220,220,0.75)',
@@ -44,8 +45,23 @@ const bookingsChart = props => {
 		values[values.length - 1] = 0;
 	}
 	return (
-		<div style={{ textAlign: 'center' }}>
-			<BarChart data={chartData} />
+		<div className='chart-container'>
+			<Bar
+				data={chartData}
+				// width={250}
+				// height={500}
+				options={{
+					title  : {
+						display  : true,
+						text     : 'Bookings in various Price Segments',
+						fontSize : 20
+					},
+					legend : {
+						display : false
+					}
+					// maintainAspectRatio : true
+				}}
+			/>
 		</div>
 	);
 };
