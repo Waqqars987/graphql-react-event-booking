@@ -21,7 +21,8 @@ type Event {
 type User {
     _id: ID!
     email: String!
-    password: String
+    token: String!
+    tokenExpiration: Int!
     createdEvents: [Event!]
 }
 

@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const graphQlSchema = require('./graphql/schema/index');
 const GraphQlResolvers = require('./graphql/resolvers/index');
 const isAuth = require('./middleware/is-auth');
+const PORT = process.env.PORT || 8000;
 
 const app = express();
 
@@ -29,6 +30,10 @@ app.use(
 	})
 );
 
+app.get('/', (req, res, next) => {
+	res.json('GraphQL API is Running...');
+});
+
 mongoose
 	.connect(
 		`mongodb+srv://${process.env.MONGO_USER}:${process.env
@@ -36,7 +41,7 @@ mongoose
 		{ useNewUrlParser: true, useUnifiedTopology: true }
 	)
 	.then(() => {
-		app.listen(8000, () => {
+		app.listen(PORT, () => {
 			console.log(`Database Connected & Node Server Started...`);
 		});
 	})
