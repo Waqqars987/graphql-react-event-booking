@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 
 import './Auth.css';
 import AuthContext from '../../context/auth-context';
+import Alert from '../../components/Alert/Alert';
 
 class AuthPage extends Component {
 	state = {
-		isLogin : true
+		isLogin : true,
+		message : null,
+		alert   : false
 	};
 
 	static contextType = AuthContext;
@@ -28,6 +31,7 @@ class AuthPage extends Component {
 		const password = this.passwordEl.current.value;
 
 		if (email.trim().length === 0 || password.trim().length === 0) {
+			this.setState({ message: 'Please enter the credentials!', alert: true });
 			return;
 		}
 
@@ -52,8 +56,10 @@ class AuthPage extends Component {
 				query     : `
 					mutation CreateUser($email: String!, $password: String!) {
 						createUser(userInput: {email: $email, password: $password}) {
-						_id
-						email
+							_id 
+							email 
+							token 
+							tokenExpiration
 						}
 					}
 				`,
@@ -78,12 +84,22 @@ class AuthPage extends Component {
 				return res.json();
 			})
 			.then(resData => {
-				if (resData.data.login.token) {
-					this.context.login(
+				if (resData.data.login && resData.data.login.token) {
+					this.handleAuthentication(
 						resData.data.login.token,
 						resData.data.login.userId,
 						resData.data.login.tokenExpiration
 					);
+				}
+				if (resData.data.createUser && resData.data.createUser.token) {
+					this.handleAuthentication(
+						resData.data.createUser.token,
+						resData.data.createUser._id,
+						resData.data.createUser.tokenExpiration
+					);
+				}
+				if (resData.errors) {
+					this.setState({ message: resData.errors[0].message.toString(), alert: true });
 				}
 			})
 			.catch(err => {
@@ -91,29 +107,44 @@ class AuthPage extends Component {
 			});
 	};
 
+	handleAuthentication (token, userId, tokenExpiration) {
+		this.context.login(token, userId, tokenExpiration);
+	}
+
+	alertDismissHandler = () => {
+		this.setState({ message: null, alert: false });
+	};
+
 	render () {
 		return (
-			<div className='auth-form__container'>
-				<form className='auth-form' onSubmit={this.submitHandler}>
-					<div>
-						<h1>{this.state.isLogin ? 'Login' : 'Signup'}</h1>
-					</div>
-					<div className='form-control'>
-						<label htmlFor='email'>Email</label>
-						<input type='email' id='email' ref={this.emailEl} />
-					</div>
-					<div className='form-control'>
-						<label htmlFor='password'>Password</label>
-						<input type='password' id='password' ref={this.passwordEl} />
-					</div>
-					<div className='form-actions'>
-						<button type='submit'>Submit</button>
-						<button type='button' onClick={this.switchModeHandler}>
-							Switch to {this.state.isLogin ? 'Signup' : 'Login'}
-						</button>
-					</div>
-				</form>
-			</div>
+			<React.Fragment>
+				<div className='auth-form__container'>
+					<form className='auth-form' onSubmit={this.submitHandler}>
+						<div>
+							<h1>{this.state.isLogin ? 'Login' : 'Signup'}</h1>
+						</div>
+						<div className='form-control'>
+							<label htmlFor='email'>Email</label>
+							<input type='email' id='email' ref={this.emailEl} />
+						</div>
+						<div className='form-control'>
+							<label htmlFor='password'>Password</label>
+							<input type='password' id='password' ref={this.passwordEl} />
+						</div>
+						<div className='form-actions'>
+							<button type='submit'>Submit</button>
+							<button type='button' onClick={this.switchModeHandler}>
+								Switch to {this.state.isLogin ? 'Signup' : 'Login'}
+							</button>
+						</div>
+					</form>
+				</div>
+				{this.state.alert && (
+					<Alert title='Alert' onConfirm={this.alertDismissHandler} confirmText='Dismiss'>
+						{this.state.message}
+					</Alert>
+				)}
+			</React.Fragment>
 		);
 	}
 }

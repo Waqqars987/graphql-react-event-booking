@@ -1,13 +1,13 @@
 .auth-form__container {
-	height: 85vh;
+	height: 67vh;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
 .auth-form {
-	width: 25rem;
-	max-width: 80%;
+	width: 20rem;
+	max-width: 90%;
 	box-shadow: 3px 2px 3px #a27edb;
 	border: 1px solid #eee;
 	padding: 1.5rem;

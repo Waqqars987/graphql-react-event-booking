@@ -4,6 +4,7 @@ import Spinner from '../../components/Spinner/Spinner';
 import BookingList from '../../components/Bookings/BookingList/BookingList';
 import BookingsChart from '../../components/Bookings/BookingsChart/BookingsChart';
 import BookingsControls from '../../components/Bookings/BookingsControls/BookingsControls';
+import Information from '../../components/Information/Information';
 
 class BookingsPage extends Component {
 	state = {
@@ -114,8 +115,12 @@ class BookingsPage extends Component {
 	};
 
 	render () {
-		let content = <Spinner />;
-		if (!this.state.isLoading) {
+		let content = null;
+		if (this.state.isLoading) {
+			content = <Spinner />;
+		} else if (!this.state.isLoading && this.state.bookings.length === 0) {
+			content = <Information>No bookings found, Make one!</Information>;
+		} else {
 			content = (
 				<React.Fragment>
 					<BookingsControls

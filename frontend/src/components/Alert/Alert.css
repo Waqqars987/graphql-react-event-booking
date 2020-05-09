@@ -1,36 +1,37 @@
-.modal {
+.alert {
 	width: 90%;
 	background: white;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+	/* border: 2px solid #5101d1; */
+	box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.26);
 	position: fixed;
-	top: 20vh;
+	top: 30vh;
 	left: 5%;
-	z-index: 250;
+	z-index: 300;
 }
 
-.modal__header {
+.alert__header {
 	padding: 1rem;
 	background: #5101d1;
 	color: white;
 }
 
-.modal__header h1 {
+.alert__header h1 {
 	margin: 0;
 	font-size: 1.25rem;
 }
 
-.modal__content {
+.alert__content {
 	padding: 1rem;
 }
 
-.modal__actions {
+.alert__actions {
 	display: flex;
 	justify-content: flex-end;
 	padding: 1rem;
 }
 
 @media (min-width: 768px) {
-	.modal {
+	.alert {
 		width: 30rem;
 		left: calc((100% - 30rem) / 2);
 	}
