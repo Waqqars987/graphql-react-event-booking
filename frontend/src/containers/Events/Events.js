@@ -71,7 +71,7 @@ class EventsPage extends Component {
 
 			const token = this.context.token;
 
-			fetch('http://localhost:8000/graphql', {
+			fetch('https://graphql-react-event.herokuapp.com/graphql', {
 				method  : 'POST',
 				body    : JSON.stringify(requestBody),
 				headers : {
@@ -131,7 +131,7 @@ class EventsPage extends Component {
 		  `
 		};
 
-		fetch('http://localhost:8000/graphql', {
+		fetch('https://graphql-react-event.herokuapp.com/graphql', {
 			method  : 'POST',
 			body    : JSON.stringify(requestBody),
 			headers : {
@@ -185,7 +185,7 @@ class EventsPage extends Component {
 			}
 		};
 
-		fetch('http://localhost:8000/graphql', {
+		fetch('https://graphql-react-event.herokuapp.com/graphql', {
 			method  : 'POST',
 			body    : JSON.stringify(requestBody),
 			headers : {
@@ -234,7 +234,7 @@ class EventsPage extends Component {
 		}
 		return (
 			<React.Fragment>
-				{(this.state.creating || this.state.selectedEvent) && <Backdrop />}
+				{(this.state.creating || this.state.selectedEvent) && <Backdrop show />}
 				{/*************************** For Creating a New Event ************************************/}
 				{this.state.creating && (
 					<Modal

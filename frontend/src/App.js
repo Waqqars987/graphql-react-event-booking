@@ -4,9 +4,8 @@ import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import AuthPage from './containers/Auth/Auth';
 import BookingsPage from './containers/Bookings/Bookings';
 import EventsPage from './containers/Events/Events';
-import MainNavigation from './components/Navigation/MainNavigation';
+import Navigation from './components/Navigation/Navigation';
 import AuthContext from './context/auth-context';
-
 import './App.css';
 
 class App extends Component {
@@ -35,7 +34,7 @@ class App extends Component {
 							logout : this.logout
 						}}
 					>
-						<MainNavigation />
+						<Navigation />
 						<main className='main-content'>
 							<Switch>
 								{this.state.token && <Redirect from='/' to='/events' exact />}

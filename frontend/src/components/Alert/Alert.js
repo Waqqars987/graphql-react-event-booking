@@ -5,7 +5,7 @@ import './Alert.css';
 const alert = props => {
 	return (
 		<React.Fragment>
-			<Backdrop />
+			<Backdrop show />
 			<div className='alert'>
 				<header className='alert__header'>
 					<h1>{props.title}</h1>
