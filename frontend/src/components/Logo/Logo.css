@@ -1,11 +1,16 @@
-.logo {
-	background-color: white;
-	padding: 8px;
-	height: 100%;
-	box-sizing: border-box;
-	border-radius: 5px;
+/* .logo {
+	height: 50%;
+} */
+
+.logo a {
+	margin: 0;
+	font-size: 1.5rem;
+	font-weight: bold;
+	color: #dfcefc;
+	text-decoration: none;
 }
 
-.logo img {
-	height: 100%;
+.logo a:hover,
+.logo a:active {
+	color: white;
 }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import './Auth.css';
 import AuthContext from '../../context/auth-context';
 import Alert from '../../components/Alert/Alert';
+import './Auth.css';
 
 class AuthPage extends Component {
 	state = {
@@ -27,8 +27,8 @@ class AuthPage extends Component {
 
 	submitHandler = event => {
 		event.preventDefault();
-		const email = this.emailEl.current.value;
-		const password = this.passwordEl.current.value;
+		const email = this.emailEl.current.value.trim().toLowerCase();
+		const password = this.passwordEl.current.value.trim();
 
 		if (email.trim().length === 0 || password.trim().length === 0) {
 			this.setState({ message: 'Please enter the credentials!', alert: true });

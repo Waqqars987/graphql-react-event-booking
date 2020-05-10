@@ -1,11 +1,11 @@
 .drawer__toggle {
-	width: 40px;
-	height: 100%;
+	width: 2.5rem;
+	height: 80%;
 	display: flex;
 	flex-flow: column;
 	justify-content: space-around;
 	align-items: center;
-	padding: 10px 0;
+	padding: 0.625rem 0;
 	box-sizing: border-box;
 	cursor: pointer;
 }
@@ -13,7 +13,7 @@
 .drawer__toggle div {
 	width: 90%;
 	height: 3px;
-	background-color: white;
+	background-color: #dfcefc;
 }
 
 @media (min-width: 500px) {

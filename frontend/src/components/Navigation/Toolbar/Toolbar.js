@@ -8,9 +8,7 @@ const toolbar = props => {
 	return (
 		<header className='toolbar'>
 			<DrawerToggle clicked={props.drawerToggleClicked} />
-			<div className='toolbar__logo'>
-				<Logo />
-			</div>
+			<Logo />
 			<nav className='desktop-only'>
 				<NavigationItems isAuthenticated={props.isAuth} />
 			</nav>
