@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
-
 import AuthPage from './containers/Auth/Auth';
 import BookingsPage from './containers/Bookings/Bookings';
 import EventsPage from './containers/Events/Events';
