@@ -1,0 +1,87 @@
+{
+	"variables": [],
+	"info": {
+		"name": "GraphQL",
+		"_postman_id": "6bad07f6-d417-2515-b369-ea2d5deffd5d",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"url": "http://localhost:8000/graphql",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"query\":\"query {login(email:\\\"user1@test.com\\\",password:\\\"user1\\\"){userId token tokenExpiration}}\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "CreateEvent",
+			"request": {
+				"url": "http://localhost:3000/graphql",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorizaton",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZWFkMTQ0NjA2NDEwODE5OGM4ZTdmM2EiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE1ODg0MTU2NjYsImV4cCI6MTU4ODQxOTI2Nn0.56fN7ac_ZODkwSubB4qTaTO4ln8nBQqAj2Kq5_JNtB0",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"query\":\"mutation {createEvent(eventInput:{title:\\\"Should Work\\\",description:\\\"This now works\\\",price:39.99,date:\\\"2020-05-02T10:31:11.755Z\\\"}){_id title}}\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "CreaterUser",
+			"request": {
+				"url": "http://localhost:8000/graphql",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"query\":\"mutation {createUser(userInput:{email:\\\"waqqar1@test.com\\\",password:\\\"tester\\\"}){_id email token tokenExpiration}}\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Test",
+			"request": {
+				"url": "http://localhost:8000",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
