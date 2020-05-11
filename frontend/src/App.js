@@ -15,6 +15,8 @@ class App extends Component {
 		alert  : false
 	};
 
+	timer = null;
+
 	login = (token, userId, expirationDate) => {
 		this.setState({ token: token, userId: userId });
 		this.autoLogout(expirationDate.getTime() - new Date().getTime());
@@ -23,10 +25,11 @@ class App extends Component {
 	logout = () => {
 		localStorage.removeItem('userData');
 		this.setState({ token: null, userId: null });
+		clearTimeout(this.timer);
 	};
 
 	autoLogout = expirationTime => {
-		setTimeout(() => {
+		this.timer = setTimeout(() => {
 			this.logout();
 			this.setState({ alert: true });
 		}, expirationTime);
@@ -71,7 +74,7 @@ class App extends Component {
 							>
 								You have been Logged Out!
 								<br />
-								Login Again to Continue
+								Login Again to Continue.
 							</Alert>
 						)}
 						<Navigation />
