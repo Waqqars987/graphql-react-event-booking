@@ -267,11 +267,16 @@ class EventsPage extends Component {
 				)}
 				{/***********************************************************************************************/}
 
-				{this.state.alert ? (
-					<Alert title='Alert' onConfirm={this.alertDismissHandler} confirmText='Okay'>
+				{this.state.alert && (
+					<Alert
+						title='Alert'
+						open={this.state.alert}
+						onConfirm={this.alertDismissHandler}
+						confirmText='Okay'
+					>
 						<h2>{this.state.message}</h2>
 					</Alert>
-				) : null}
+				)}
 
 				{/********************************* For Showing Event Details************************************/}
 				{this.state.selectedEvent && (

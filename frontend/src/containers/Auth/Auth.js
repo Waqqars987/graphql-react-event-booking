@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 
 import AuthContext from '../../context/auth-context';
 import Alert from '../../components/Alert/Alert';
+import Spinner from '../../components/Spinner/Spinner';
 import './Auth.css';
 
 class AuthPage extends Component {
 	state = {
-		isLogin : true,
-		message : null,
-		alert   : false
+		isLogin          : true,
+		message          : null,
+		alert            : false,
+		isAuthenticating : false
 	};
 
 	static contextType = AuthContext;
@@ -35,6 +37,7 @@ class AuthPage extends Component {
 			return;
 		}
 
+		this.setState({ isAuthenticating: true });
 		let requestBody = {
 			query     : `
 				query Login($email: String!, $password: String!) {
@@ -84,6 +87,7 @@ class AuthPage extends Component {
 				return res.json();
 			})
 			.then(resData => {
+				this.setState({ isAuthenticating: false });
 				if (resData.data.login && resData.data.login.token) {
 					this.handleAuthentication(
 						resData.data.login.token,
@@ -99,6 +103,7 @@ class AuthPage extends Component {
 					);
 				}
 				if (resData.errors) {
+					this.setState({ isAuthenticating: false });
 					this.setState({ message: resData.errors[0].message.toString(), alert: true });
 				}
 			})
@@ -116,34 +121,43 @@ class AuthPage extends Component {
 	};
 
 	render () {
+		let form = (
+			<form className='auth-form' onSubmit={this.submitHandler}>
+				<div>
+					<h1>{this.state.isLogin ? 'Login' : 'Signup'}</h1>
+				</div>
+				<div className='form-control'>
+					<label htmlFor='email'>Email</label>
+					<input type='email' id='email' ref={this.emailEl} />
+				</div>
+				<div className='form-control'>
+					<label htmlFor='password'>Password</label>
+					<input type='password' id='password' ref={this.passwordEl} />
+				</div>
+				<div className='form-actions'>
+					<button type='submit'>Submit</button>
+					<button type='button' onClick={this.switchModeHandler}>
+						Switch to {this.state.isLogin ? 'Signup' : 'Login'}
+					</button>
+				</div>
+			</form>
+		);
+		if (this.state.isAuthenticating) {
+			form = <Spinner />;
+		}
 		return (
 			<React.Fragment>
-				<div className='auth-form__container'>
-					<form className='auth-form' onSubmit={this.submitHandler}>
-						<div>
-							<h1>{this.state.isLogin ? 'Login' : 'Signup'}</h1>
-						</div>
-						<div className='form-control'>
-							<label htmlFor='email'>Email</label>
-							<input type='email' id='email' ref={this.emailEl} />
-						</div>
-						<div className='form-control'>
-							<label htmlFor='password'>Password</label>
-							<input type='password' id='password' ref={this.passwordEl} />
-						</div>
-						<div className='form-actions'>
-							<button type='submit'>Submit</button>
-							<button type='button' onClick={this.switchModeHandler}>
-								Switch to {this.state.isLogin ? 'Signup' : 'Login'}
-							</button>
-						</div>
-					</form>
-				</div>
 				{this.state.alert && (
-					<Alert title='Alert' onConfirm={this.alertDismissHandler} confirmText='Dismiss'>
+					<Alert
+						title='Alert'
+						open={this.state.alert}
+						onConfirm={this.alertDismissHandler}
+						confirmText='Dismiss'
+					>
 						{this.state.message}
 					</Alert>
 				)}
+				<div className='auth-form__container'>{form}</div>
 			</React.Fragment>
 		);
 	}
