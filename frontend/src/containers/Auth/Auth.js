@@ -92,14 +92,14 @@ class AuthPage extends Component {
 					this.handleAuthentication(
 						resData.data.login.token,
 						resData.data.login.userId,
-						resData.data.login.tokenExpiration
+						+resData.data.login.tokenExpiration
 					);
 				}
 				if (resData.data.createUser && resData.data.createUser.token) {
 					this.handleAuthentication(
 						resData.data.createUser.token,
 						resData.data.createUser._id,
-						resData.data.createUser.tokenExpiration
+						+resData.data.createUser.tokenExpiration
 					);
 				}
 				if (resData.errors) {
@@ -113,7 +113,10 @@ class AuthPage extends Component {
 	};
 
 	handleAuthentication (token, userId, tokenExpiration) {
-		this.context.login(token, userId, tokenExpiration);
+		const expirationDate = new Date(new Date().getTime() + tokenExpiration * 60 * 60 * 1000); //Converting Hours to Milliseconds
+		const user = { userId: userId, token: token, expirationDate: expirationDate };
+		localStorage.setItem('userData', JSON.stringify(user));
+		this.context.login(token, userId, expirationDate);
 	}
 
 	alertDismissHandler = () => {

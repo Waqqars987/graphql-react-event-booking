@@ -5,21 +5,50 @@ import BookingsPage from './containers/Bookings/Bookings';
 import EventsPage from './containers/Events/Events';
 import Navigation from './components/Navigation/Navigation';
 import AuthContext from './context/auth-context';
+import Alert from './components/Alert/Alert';
 import './App.css';
 
 class App extends Component {
 	state = {
 		token  : null,
-		userId : null
+		userId : null,
+		alert  : false
 	};
 
-	login = (token, userId, tokenExpiration) => {
+	login = (token, userId, expirationDate) => {
 		this.setState({ token: token, userId: userId });
+		this.autoLogout(expirationDate.getTime() - new Date().getTime());
 	};
 
 	logout = () => {
+		localStorage.removeItem('userData');
 		this.setState({ token: null, userId: null });
 	};
+
+	autoLogout = expirationTime => {
+		setTimeout(() => {
+			this.logout();
+			this.setState({ alert: true });
+		}, expirationTime);
+	};
+
+	autoLogin () {
+		const user = JSON.parse(localStorage.getItem('userData'));
+		if (!user) {
+			return;
+		}
+		const expirationDate = new Date(user.expirationDate);
+		if (expirationDate <= new Date()) {
+			this.logout();
+		} else {
+			this.setState({ token: user.token, userId: user.userId });
+			this.autoLogout(expirationDate.getTime() - new Date().getTime());
+		}
+	}
+
+	componentDidMount () {
+		this.autoLogin();
+	}
 
 	render () {
 		return (
@@ -33,6 +62,18 @@ class App extends Component {
 							logout : this.logout
 						}}
 					>
+						{this.state.alert && (
+							<Alert
+								title='Alert'
+								open
+								onConfirm={() => this.setState({ alert: false })}
+								confirmText='Dismiss'
+							>
+								You have been Logged Out!
+								<br />
+								Login Again to Continue
+							</Alert>
+						)}
 						<Navigation />
 						<main className='main-content'>
 							<Switch>
