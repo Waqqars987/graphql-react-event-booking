@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const graphQlSchema = require('./graphql/schema/index');
 const GraphQlResolvers = require('./graphql/resolvers/index');
 const isAuth = require('./middleware/is-auth');
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8080;
 
 const app = express();
 
@@ -27,7 +27,7 @@ app.use(
 	graphQlHttp({
 		schema    : graphQlSchema,
 		rootValue : GraphQlResolvers,
-		graphiql  : true
+		graphiql  : process.env.NODE_ENV !== 'production'
 	})
 );
 
