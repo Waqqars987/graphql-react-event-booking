@@ -1,34 +1,34 @@
 {
-  "customers": [
-    {
-      "id": "1",
-      "name": "John Doe",
-      "email": "jdoe@gmail.com",
-      "age": 35
-    },
-    {
-      "id": "2",
-      "name": "Sam Smith",
-      "email": "ssmith@gmail.com",
-      "age": 44
-    },
-    {
-      "id": "3",
-      "name": "Sarah Williams",
-      "email": "sarah@gmail.com",
-      "age": 32
-    },
-    {
-      "id": "5",
-      "name": "Kylie Jackson",
-      "email": "kylie@gmail.com",
-      "age": 28
-    },
-    {
-      "name": "Waqqar",
-      "email": "waqqar@gmail.com",
-      "age": 25,
-      "id": "jEyOW_m"
-    }
-  ]
+	"customers": [
+		{
+			"id": "1",
+			"name": "John Doe",
+			"email": "jdoe@gmail.com",
+			"age": 35
+		},
+		{
+			"id": "2",
+			"name": "Sam Smith",
+			"email": "ssmith@gmail.com",
+			"age": 44
+		},
+		{
+			"id": "3",
+			"name": "Sarah Williams",
+			"email": "sarah@gmail.com",
+			"age": 32
+		},
+		{
+			"id": "5",
+			"name": "Kylie Jackson",
+			"email": "kylie@gmail.com",
+			"age": 28
+		},
+		{
+			"name": "Waqqar",
+			"email": "waqqar@gmail.com",
+			"age": 25,
+			"id": "jEyOW_m"
+		}
+	]
 }

@@ -1,4 +1,11 @@
-const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLSchema, GraphQLList, GraphQLNonNull } = require('graphql');
+const {
+	GraphQLObjectType,
+	GraphQLString,
+	GraphQLInt,
+	GraphQLSchema,
+	GraphQLList,
+	GraphQLNonNull
+} = require('graphql');
 const axios = require('axios');
 
 // Customer Type
@@ -22,13 +29,17 @@ const RootQuery = new GraphQLObjectType({
 				id : { type: GraphQLString }
 			},
 			resolve (parentValue, args) {
-				return axios.get('http://localhost:3000/customers/' + args.id).then(res => res.data);
+				return axios
+					.get('http://localhost:3000/customers/' + args.id)
+					.then(res => res.data);
 			}
 		},
 		customers : {
 			type    : GraphQLList(CustomerType),
 			resolve (parentValue, args) {
-				return axios.get('http://localhost:3000/customers').then(res => res.data);
+				return axios
+					.get('http://localhost:3000/customers')
+					.then(res => res.data);
 			}
 		}
 	}
@@ -61,7 +72,9 @@ const mutation = new GraphQLObjectType({
 				id : { type: new GraphQLNonNull(GraphQLString) }
 			},
 			resolve (parentValue, args) {
-				return axios.delete('http://localhost:3000/customers/' + args.id).then(res => res.data);
+				return axios
+					.delete('http://localhost:3000/customers/' + args.id)
+					.then(res => res.data);
 			}
 		},
 		editCustomer   : {
@@ -73,7 +86,9 @@ const mutation = new GraphQLObjectType({
 				age   : { type: GraphQLInt }
 			},
 			resolve (parentValue, args) {
-				return axios.patch('http://localhost:3000/customers/' + args.id, args).then(res => res.data);
+				return axios
+					.patch('http://localhost:3000/customers/' + args.id, args)
+					.then(res => res.data);
 			}
 		}
 	}
