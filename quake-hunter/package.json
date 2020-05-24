@@ -1,0 +1,23 @@
+{
+	"name": "quake-hunter",
+	"version": "1.0.0",
+	"description": "Earthquake listing app",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"server": "cd server && nodemon index.js"
+	},
+	"author": "Waqqar Suleman",
+	"license": "MIT",
+	"dependencies": {
+		"apollo-datasource": "^0.7.0",
+		"apollo-datasource-rest": "^0.9.0",
+		"apollo-server": "^2.13.1",
+		"graphql": "^15.0.0",
+		"jsonwebtoken": "^8.5.1",
+		"node-fetch": "^2.6.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.4"
+	}
+}
