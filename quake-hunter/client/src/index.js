@@ -1,26 +1,49 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
+import gql from 'graphql-tag';
 
+import { resolvers, typeDefs } from './schema';
 import App from './App';
+import Login from './pages/Login';
 import './index.css';
+
+const IS_LOGGED_IN = gql`
+	query IsUserLoggedIn {
+		isLoggedIn @client
+	}
+`;
+
+function IsLoggedIn () {
+	const { data } = useQuery(IS_LOGGED_IN);
+	return data.isLoggedIn ? <App /> : <Login />;
+}
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
-	uri : 'http://localhost:4000/graphql/'
+	uri     : 'http://localhost:4000/graphql/',
+	headers : { authorization: localStorage.getItem('token') }
 });
 
 const client = new ApolloClient({
 	cache,
-	link
+	link,
+	typeDefs,
+	resolvers
+});
+
+cache.writeData({
+	data : {
+		isLoggedIn : !!localStorage.getItem('token')
+	}
 });
 
 ReactDOM.render(
 	<ApolloProvider client={client}>
-		<App />
+		<IsLoggedIn />
 	</ApolloProvider>,
 	document.getElementById('root')
 );

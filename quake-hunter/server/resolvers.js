@@ -27,8 +27,8 @@ module.exports = {
 		//   me: (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
 	},
 	Mutation : {
-		login      : async (_, { email }, { dataSources }) => {
-			const user = await dataSources.userAPI.getUser({ email });
+		login      : async (_, { email, password }, { dataSources }) => {
+			const user = await dataSources.userAPI.getUser({ email, password });
 			if (user) {
 				const token = jwt.sign({ id: user.id, email: user.email }, 'secret', {
 					expiresIn : 60 * 60
@@ -36,7 +36,8 @@ module.exports = {
 				return token;
 			}
 			if (!user) {
-				console.log('User not database.');
+				console.log('User not in database.');
+				return '';
 			}
 		},
 		saveRecord : async (_, { recordId }, { dataSources }) => {
