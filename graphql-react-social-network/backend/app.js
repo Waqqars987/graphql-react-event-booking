@@ -99,7 +99,7 @@ app.use((error, req, res, next) => {
 
 mongoose
 	.connect(
-		'mongodb+srv://graphqluser:graphqluser@learningcluster-lo905.mongodb.net/react-social-network?retryWrites=true&w=majority',
+		'mongodb+srv://<username>:<password>@learningcluster-lo905.mongodb.net/react-social-network?retryWrites=true&w=majority',
 		{
 			useNewUrlParser    : true,
 			useUnifiedTopology : true
